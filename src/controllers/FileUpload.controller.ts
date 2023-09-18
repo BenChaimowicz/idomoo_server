@@ -14,7 +14,7 @@ export class FileUploadController {
             const savePath = `${path.resolve(__dirname, '../')}/uploads/1.jpg`;
             file.mv(savePath, (err) => {
                 if (err) return res.status(500).send(err);
-                const imageURL = `http://localhost:3001/uploads/1.jpg`;
+                const imageURL = '/uploads/1.jpg';
                 res.send(imageURL);
             });
         } catch (error) {
