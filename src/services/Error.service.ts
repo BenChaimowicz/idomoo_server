@@ -16,6 +16,7 @@ export class ErrorService {
     public checkErrorCode(error: any, ...codes: number[]): boolean {
         if (error.errors) {
             for (const err of error.errors) {
+                console.log(err, codes.includes(err.error_code));
                 if (codes.includes(err.error_code)) return true;
             }
         }
