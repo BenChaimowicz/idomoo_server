@@ -26,9 +26,9 @@ export class StoryBoardController {
 
     public async generateVideoFromStoryboard(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const { storyboard_id, data } = req.body as GenerateVideoRequest;
+            const { storyboard_id, data, output } = req.body as GenerateVideoRequest;
             const videoElements: GenerateVideoDataElement[] = data ? data : [{ key: 'Text1', val: 'Test' }, { key: 'Media1', val: 'rgb(255,255,0' }];
-            const video = await this.storyboardService.generateFromStoryboard(storyboard_id, ...videoElements);
+            const video = await this.storyboardService.generateFromStoryboard(storyboard_id, output, ...videoElements);
             res.send(video);
         } catch (error) {
             res.status(500).send(error);

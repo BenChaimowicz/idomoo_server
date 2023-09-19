@@ -1,7 +1,7 @@
 import { Inject, Service } from "typedi";
 import axios from "axios";
 import { AuthService } from "./Auth.service";
-import { GenerateVideoDataElement, GenerateVideoRequest, StoryboardResponse } from "../types/types";
+import { GenerateVideoDataElement, GenerateVideoRequest, OutputRoot, StoryboardResponse } from "../types/types";
 
 @Service()
 export class StoryboardService {
@@ -19,10 +19,10 @@ export class StoryboardService {
         }
     }
 
-    public async generateFromStoryboard(id: number, ...dataElements: GenerateVideoDataElement[]): Promise<unknown> {
+    public async generateFromStoryboard(id: number, output: OutputRoot, ...dataElements: GenerateVideoDataElement[]): Promise<unknown> {
         try {
             const URL = `${process.env.API_URL}/storyboards/generate`;
-            const body: GenerateVideoRequest = { storyboard_id: id, data: dataElements, output: { video: [{ format: 'webm', height: 100, overlays: [] }] } };
+            const body: GenerateVideoRequest = { storyboard_id: id, data: dataElements, output };
             const { data } = await axios.post(URL, body, { headers: { Authorization: await this.authService.getAuthHeader() } });
             console.log(data);
 
