@@ -23,6 +23,7 @@ class Routes {
         this.router.get(`/storyboard/:id`, (req, res, next) => this.storyboardController.getStoryboard(req, res, next));
         this.router.get(`/storyboard/`, (req, res, next) => this.storyboardController.getStoryboard(req, res, next));
         this.router.post(`/storyboard/generate`, (req, res, next) => this.storyboardController.generateVideoFromStoryboard(req, res, next));
+        this.router.get('/status', (req, res, next) => this.storyboardController.checkVideoStatus(req, res, next));
         this.router.post(`/upload`, fileUpload({ debug: true }), (req, res, next) => this.fileUploadController.uploadFile(req, res, next));
     }
 }
