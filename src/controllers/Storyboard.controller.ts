@@ -3,13 +3,15 @@ import { StoryboardService } from "../services/Storyboard.service";
 import { NextFunction, Request, Response } from "express";
 import { GenerateVideoDataElement, GenerateVideoRequest } from "../types/types";
 import { ErrorService } from "../services/Error.service";
+import { VideoService } from "../services/Video.service";
 
 @Service()
 export class StoryBoardController {
 
     constructor(
         @Inject() private storyboardService: StoryboardService,
-        @Inject() private errorService: ErrorService
+        @Inject() private errorService: ErrorService,
+        @Inject() private videoService: VideoService
     ) { }
 
     public async getStoryboard(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -36,5 +38,18 @@ export class StoryBoardController {
         }
     }
 
-
+    public async checkVideoStatus(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { link } = req.query;
+            if (!link) {
+                res.status(400).send('Missing link');
+                return;
+            }
+            const statusCheck = await this.videoService.checkStatus(link as string);
+            res.send(statusCheck);
+        } catch (error) {
+            res.status(500).send(error);
+            this.errorService.logAxiosErrorMessage(error);
+        }
+    }
 }

@@ -6,14 +6,20 @@ import { AuthService } from "./Auth.service";
 
 
 @Service()
-export class VideoController {
+export class VideoService {
     constructor(
         @Inject() private errorService: ErrorService,
         @Inject() private authService: AuthService
     ) { }
 
-    public async checkStatus(link: string): Promise<CheckStatusResponse> {
-        const { data } = await axios.get<CheckStatusResponse>(link, { headers: { Authorization: await this.authService.getAuthHeader() } });
-        return data;
+    public async checkStatus(link: string): Promise<CheckStatusResponse | undefined> {
+        try {
+            const { data } = await axios.get<CheckStatusResponse>(link, { headers: { Authorization: await this.authService.getAuthHeader() } });
+            return data;
+        } catch (error) {
+            throw error;
+        }
     }
+
+
 }
